@@ -59,7 +59,7 @@ export const updateTrademark = async (req: Request, res: Response) => {
   }
 
   let score = scoreTrademark(req.body as Trademark);
-  
+
   let sql = 'UPDATE trademarks SET name = ?, registration_date = ?, score = ? WHERE id = ?';
 
   db.run(sql, 
@@ -77,9 +77,7 @@ export const deleteTrademark = async (req: Request, res: Response) => {
   if (req.params.id === undefined) {
     return res.status(400).json({ error: 'Id is required' });
   }
- 
-  // TODO: Check if the trademark has associated documents before deleting; if so : error or delete all documents ? need to think about it
-
+  
   let sql = 'DELETE FROM trademarks WHERE id = ?';
 
   db.run(sql, 

@@ -7,6 +7,6 @@ export const documentTable = `
     document_date TEXT NOT NULL,
     type TEXT NOT NULL,
     trademark_id INTEGER NOT NULL,
-    FOREIGN KEY (trademark_id) REFERENCES trademarks(id)
+    FOREIGN KEY (trademark_id) REFERENCES trademarks(id) ON DELETE CASCADE
   )
 `;
