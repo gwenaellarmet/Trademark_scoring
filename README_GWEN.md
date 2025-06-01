@@ -12,3 +12,7 @@ And to finish up; added the minimal to get the server up and running, as well as
 ## Setting up models
 
 Not much to say here; I used the definition given in the README_EN and added the DocumentType type to check if it's one of the allowed type
+
+## Setting up sqlite3
+
+Created the database and table creation scripts; Added score into the base to avoid calculating eachtime
