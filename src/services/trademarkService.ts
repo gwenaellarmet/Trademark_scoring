@@ -49,16 +49,19 @@ score = key_documents + time_coverage + document_count
 ```
 */
 export const scoreTrademark = async (trademark: Trademark): Promise<number> => {
+  if (!trademark.id) {
+    throw new Error('Trademark ID is required');
+  }
   return getDocumentsByTrademarkId(trademark.id).then((docs) => {
     let score = 0;
     // Presence of Key Document Types (max 40 points)
-    score += calculateKeyDocumentScore(docs);
+    score += _calculateKeyDocumentScore(docs);
 
     // Time Coverage (max 30 points)
-    score += calculateTimeCoverageScore(trademark, docs);
+    score += _calculateTimeCoverageScore(trademark, docs);
 
     // Document Volume (max 30 points)
-    score += calculateDocumentVolumeScore(docs);
+    score += _calculateDocumentVolumeScore(docs);
 
     return score;
   });
@@ -80,7 +83,7 @@ The `other` type gives **0 points**
 */
 const KEY_TYPES = ['invoice', 'advertisement', 'product', 'legal']
 
-const calculateKeyDocumentScore = (documents: Document[]): number => {
+export const _calculateKeyDocumentScore = (documents: Document[]): number => {
   let documentsPresent: String[] = [];
 
   for (let doc of documents) {
@@ -102,7 +105,7 @@ const calculateKeyDocumentScore = (documents: Document[]): number => {
 > Example:  
 > 4 years since registration, 2 years covered → (2/4) × 30 = **15 points**
 */
-const calculateTimeCoverageScore = (trademark: Trademark, documents: Document[]): number => {
+export const _calculateTimeCoverageScore = (trademark: Trademark, documents: Document[]): number => {
   let yearsSinceRegistration = new Date().getFullYear() - new Date(trademark.registration_date).getFullYear() + 1;
   
   let yearsCovered: String[] = [];
@@ -125,6 +128,6 @@ const calculateTimeCoverageScore = (trademark: Trademark, documents: Document[])
 > → 8 documents = 16 points  
 > → 20 documents = **30 points max**
 */
-const calculateDocumentVolumeScore = (documents: Document[]): number => {
+export const _calculateDocumentVolumeScore = (documents: Document[]): number => {
   return Math.min(documents.length * 2, 30); // Capped at 30 points
 }
