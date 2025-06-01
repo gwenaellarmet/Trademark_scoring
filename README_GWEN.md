@@ -66,3 +66,44 @@ Tested all CRUD endpoints, didn't tested all possible errors messages; would be 
 ## Small Front-End
 
 For the front-end, as it's optionnal and a prototype; I used Copilot to generate the script (which I had to debug a bit of course). With time, I would have of course build a gorgeous angular app (since I have 10+ years working on angularjs and Angular); but it's not the subject of the exercice here so a quick interface is perfect for this :)
+
+# Post Mortem
+
+This project was a prototype project so most of good practice for working as severals devs where not put in place, and the project structure is not really scalable (especialy the Front-End); there is no pre-commit hooks for testing, everything is on the main branch basically all that need to be set up to assure good cooperation between devs and code quality.
+I did enjoy the project, it's good to go back to a full ts stack.
+
+# Installation
+
+1. Install dependencies
+
+   In the project root directory, run:
+   ```bash
+   npm install
+   ```
+
+2. Set up the database
+
+   The SQLite database and tables will be created automatically on first run.  
+   No manual setup is required.
+
+3. Start the backend server
+
+   ```bash
+   npm run dev
+   ```
+   This will start the Express server with auto-reload (using nodemon).
+
+4. Access the web application
+
+   Open your browser and go to:
+   ```
+   http://localhost:3000
+   ```
+   (or the port specified in your environment, if different)
+
+5. Run tests (optional)
+
+   To run all Jest tests:
+   ```bash
+   npm test
+   ```
