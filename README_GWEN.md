@@ -16,3 +16,10 @@ Not much to say here; I used the definition given in the README_EN and added the
 ## Setting up sqlite3
 
 Created the database and table creation scripts; Added score into the base to avoid calculating eachtime
+
+## CRUD for template
+
+Basic Create/Read/Update/Delete functions for a controller; the sql query might have to move into a service later. I did added the multiple/single READ function, usual API settup.
+Had some weird issue with typing from express 5; reverted to 4 for now, but will dig into this issue when I'm not into time pressure.
+Added some TODO comment for next steps
+
