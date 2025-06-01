@@ -62,3 +62,7 @@ TrademarkService : Quite heavy but tested quite a few cases
 ## Testing controllers
 
 Tested all CRUD endpoints, didn't tested all possible errors messages; would be done if there was more time
+
+## Small Front-End
+
+For the front-end, as it's optionnal and a prototype; I used Copilot to generate the script (which I had to debug a bit of course). With time, I would have of course build a gorgeous angular app (since I have 10+ years working on angularjs and Angular); but it's not the subject of the exercice here so a quick interface is perfect for this :)

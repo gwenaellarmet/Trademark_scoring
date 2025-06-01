@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Trademark Manager</title>
+  <link rel="stylesheet" href="pico.purple.min.css" />
+</head>
+<body>
+  <main class="container">
+    <h1>Trademark Manager</h1>
+    <form id="trademark-form">
+      <input type="hidden" id="trademark-id" />
+      <label>
+        Name
+        <input type="text" id="trademark-name" required />
+      </label>
+      <label>
+        Registration Date
+        <input type="date" id="trademark-date" required />
+      </label>
+      <button type="submit" id="submit-btn">Add Trademark</button>
+      <button type="button" id="cancel-btn" style="display:none;">Cancel</button>
+    </form>
+    <hr />
+    <h2>All Trademarks</h2>
+    <table id="trademark-table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Registration Date</th>
+          <th>Score</th>
+          <th>Documents</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Trademarks will be inserted here -->
+      </tbody>
+    </table>
+  </main>
+
+  <!-- Document Modal -->
+  <dialog id="document-modal">
+    <article>
+      <header>
+        <h3 id="doc-modal-title">Documents for Trademark</h3>
+      </header>
+      <form id="document-form">
+        <input type="hidden" id="document-id" />
+        <label>
+          Title
+          <input type="text" id="document-title" required />
+        </label>
+        <label>
+          Mime Type
+          <input type="text" id="document-mime" required />
+        </label>
+        <label>
+          Content
+          <textarea id="document-content" required></textarea>
+        </label>
+        <label>
+          Document Date
+          <input type="date" id="document-date" required />
+        </label>
+        <button type="submit" id="doc-submit-btn">Add Document</button>
+        <button type="button" id="doc-cancel-btn" style="display:none;">Cancel</button>
+      </form>
+      <hr />
+      <table id="document-table">
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Date</th>
+            <th>Type</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Documents will be inserted here -->
+        </tbody>
+      </table>
+      <footer>
+        <button id="close-doc-modal">Close</button>
+      </footer>
+    </article>
+  </dialog>
+  <script src="main.js"></script>
+</body>
+</html>
