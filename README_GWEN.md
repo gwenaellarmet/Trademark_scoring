@@ -34,3 +34,7 @@ For now, validation/classification/scoring is not handle but will be next step; 
 
 Used some regex to check content and title for a match, we concat the title at the start of the content to slash the regex matching process by 2.
 
+## Validation function
+
+The issue here is that I need the trademark title which I don't have directly from the document; I need a getTrademarkbyId function independant from the trademark controller
+(not important note but by copy/pasting the rule; I just found out that it's ok to have emoji in ts comments... which is cool to know)

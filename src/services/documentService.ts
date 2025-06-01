@@ -28,9 +28,8 @@ export const classifyDocument = (documentTitle: string, documentContent: string)
     // Build a regex that matches any keyword as a whole word, global and case-insensitive
     let regex = new RegExp('\\b(' + keywords.join('|') + ')\\b', 'gi');
 
-    let matchesTitle = documentTitle.match(regex) || [];
-    let matchesContent = documentContent.match(regex) || [];
-    let score = (matchesTitle.length + matchesContent.length) * 5;
+    let matches = (documentTitle + ' ' + documentContent).match(regex) || [];
+    let score = matches.length * 5;
 
     if (score > maxScore && score >= 10) {
       maxScore = score;
@@ -38,4 +37,10 @@ export const classifyDocument = (documentTitle: string, documentContent: string)
     }
   }
   return selectedType;
+}
+
+// > ⚠️ A document is only valid if the **trademark name appears in its content**
+
+export const validateDocument = (trademarkName: string, documentContent: string): boolean => {
+  return (documentContent.toLowerCase().includes(trademarkName.toLowerCase()))
 }

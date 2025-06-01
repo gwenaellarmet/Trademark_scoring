@@ -1,7 +1,9 @@
 import { Request, Response } from 'express';
 import db from '../config/database';
 
-import { classifyDocument } from '../services/documentService';
+import { classifyDocument, 
+         validateDocument } from '../services/documentService';
+import { getTrademarkbyId } from '../services/trademarkService';
 
 export const createDocument = async (req: Request, res: Response) => {
   const { title, mime_type, content, document_date, trademark_id } = req.body;
@@ -10,8 +12,10 @@ export const createDocument = async (req: Request, res: Response) => {
     return res.status(400).json({ error: 'All fields are required' });
   }
   
-  // TODO: Validate if the document is valid for this trademark if not; return error ?
+  let trademark = await getTrademarkbyId(trademark_id);
 
+  // TODO: Validate if the document is valid for this trademark if not; return error ?
+  if (!validateDocument(trademark.name, content)) return res.status(400).json({ error: 'Invalid Document' });
   let sql = 'INSERT INTO documents (title, mime_type, content, document_date, type, trademark_id) VALUES (?, ?, ?, ?, ?, ?)'
 
   let type = classifyDocument(title, content);
