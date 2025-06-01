@@ -1,6 +1,9 @@
 import { Request, Response } from 'express';
 import db from '../config/database';
 
+import { Trademark } from '../models/Trademark';
+import { scoreTrademark } from '../services/trademarkService';
+
 export const createTrademark = async (req: Request, res: Response) => {
   let { name, registration_date } = req.body;
   
@@ -55,7 +58,8 @@ export const updateTrademark = async (req: Request, res: Response) => {
     return res.status(400).json({ error: 'Name, registration date and id are required' });
   }
 
-  let score = 0 // TODO : Calculate the score based on documents associated with the trademark
+  let score = scoreTrademark(req.body as Trademark);
+  
   let sql = 'UPDATE trademarks SET name = ?, registration_date = ?, score = ? WHERE id = ?';
 
   db.run(sql, 

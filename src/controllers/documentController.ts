@@ -2,8 +2,10 @@ import { Request, Response } from 'express';
 import db from '../config/database';
 
 import { classifyDocument, 
-         validateDocument } from '../services/documentService';
-import { getTrademarkbyId } from '../services/trademarkService';
+         validateDocument,
+         getDocumentbyId } from '../services/documentService';
+import { getTrademarkbyId,
+         updateTrademarkScore } from '../services/trademarkService';
 
 export const createDocument = async (req: Request, res: Response) => {
   const { title, mime_type, content, document_date, trademark_id } = req.body;
@@ -14,8 +16,9 @@ export const createDocument = async (req: Request, res: Response) => {
   
   let trademark = await getTrademarkbyId(trademark_id);
 
-  // TODO: Validate if the document is valid for this trademark if not; return error ?
   if (!validateDocument(trademark.name, content)) return res.status(400).json({ error: 'Invalid Document' });
+
+
   let sql = 'INSERT INTO documents (title, mime_type, content, document_date, type, trademark_id) VALUES (?, ?, ?, ?, ?, ?)'
 
   let type = classifyDocument(title, content);
@@ -23,10 +26,10 @@ export const createDocument = async (req: Request, res: Response) => {
   db.run(
     sql,
     [title, mime_type, content, document_date, type, trademark_id],
-     function (err) {
+     async function (err) {
       if (err) return res.status(400).json({ error: err.message });
 
-      // TODO: Update the trademark score since a new document was added
+      await updateTrademarkScore(trademark);
 
       res.status(201).json({ id: this.lastID, title, mime_type, content, document_date, type, trademark_id });
     }
@@ -68,7 +71,9 @@ export const updateDocument = async (req: Request, res: Response) => {
     return res.status(400).json({ error: 'All fields are required' });
   }
 
-  //TODO : Validate if the document is valid for this trademark if not; return error ?
+  let trademark = await getTrademarkbyId(trademark_id);
+
+  if (!validateDocument(trademark.name, content)) return res.status(400).json({ error: 'Invalid Document' });
 
   let sql = 'UPDATE documents SET title = ?, mime_type = ?, content = ?, document_date = ?, type = ?, trademark_id = ? WHERE id = ?'
 
@@ -77,11 +82,11 @@ export const updateDocument = async (req: Request, res: Response) => {
   db.run(
     sql,
     [title, mime_type, content, document_date, type, trademark_id],
-    function (err) {
+    async function (err) {
       if (err) return res.status(400).json({ error: err.message });
       if (this.changes === 0) return res.status(404).json({ error: 'Not found' });
 
-      // TODO: Update the trademark score since a new document was updated
+      await updateTrademarkScore(trademark);
 
       res.status(201).json({ id: req.params.id, title, mime_type, content, document_date, type, trademark_id });
     }
@@ -93,15 +98,18 @@ export const deleteDocument = async (req: Request, res: Response) => {
     return res.status(400).json({ error: 'Id is required' });
   }
 
+  let document = await getDocumentbyId(req.params.id as unknown as number);
+  let trademark = await getTrademarkbyId(document.trademark_id);
+
   let sql = 'DELETE FROM documents WHERE id = ?';
 
   db.run(sql,
     [req.params.id], 
-    function (err) {
+    async function (err) {
       if (err) return res.status(500).json({ error: err.message });
       if (this.changes === 0) return res.status(404).json({ error: 'Not found' });
 
-      // TODO: Update the associated trademark score since a document was deleted
+      await updateTrademarkScore(trademark);
 
       res.status(204).send();
     });

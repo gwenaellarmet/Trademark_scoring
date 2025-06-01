@@ -1,3 +1,23 @@
+import db from '../config/database';
+import { Document } from '../models/Document';  
+
+
+export const getDocumentbyId = (id: number): Promise<Document> => {
+  return new Promise((resolve, reject) => {
+    db.get(
+      'SELECT * FROM documents WHERE id = ?',
+      [id],
+      (err, row) => {
+        if (err) return reject(err);
+        if (!row) return reject(new Error('Document not found'));
+
+        resolve(row as Document);
+      }
+    );
+  });
+};
+
+
 /*
 Each type has an associated list of keywords.  
 Each keyword found in the document's `title` or `content` adds **+5 points**.
@@ -44,3 +64,17 @@ export const classifyDocument = (documentTitle: string, documentContent: string)
 export const validateDocument = (trademarkName: string, documentContent: string): boolean => {
   return (documentContent.toLowerCase().includes(trademarkName.toLowerCase()))
 }
+
+// Functions used for scoring trademarks
+export const getDocumentsByTrademarkId = (trademarkId: number): Promise<Document[]> => {
+  return new Promise((resolve, reject) => {
+    if (!trademarkId) {
+      return reject(new Error('Trademark ID is required'));
+    }
+    const sql = 'SELECT * FROM documents WHERE trademark_id = ?';
+    db.all(sql, [trademarkId], (err, rows) => {
+      if (err) return reject(err);
+      resolve(rows as Document[]);
+    });
+  });
+};

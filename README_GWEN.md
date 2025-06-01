@@ -38,3 +38,10 @@ Used some regex to check content and title for a match, we concat the title at t
 
 The issue here is that I need the trademark title which I don't have directly from the document; I need a getTrademarkbyId function independant from the trademark controller
 (not important note but by copy/pasting the rule; I just found out that it's ok to have emoji in ts comments... which is cool to know)
+The function was added in a new trademark service
+
+## Scoring function
+
+That's the big one. Was easier to split it into 3 function each scoring their part.
+There is a design issue with the time coverage part: time doesn't stop so score is changing; some kind of cron need to exist in order to keep the score up to date; this won't be done in this project as it won't be deployed but it need to be kept in mind (except if we succeed in stopping time, but then we have other kind of issues)
+We only expose the top functions in the service; might extract the scoring logic into a different logic at some point, but for now it'll do since trademarkService is not that big
