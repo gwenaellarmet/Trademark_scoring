@@ -8,7 +8,7 @@ export const createTrademark = async (req: Request, res: Response) => {
     return res.status(400).json({ error: 'Name and registration date are required' });
   }
 
-  let score = 0; //Initial score is always 0 since there is no documents on creation
+  let score = 0; // Initial score is always 0 since there is no documents on creation
   let sql = 'INSERT INTO trademarks (name, registration_date, score) VALUES (?, ?, ?)';
 
   db.run(sql, 

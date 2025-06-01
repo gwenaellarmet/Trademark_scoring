@@ -24,4 +24,13 @@ And Added a router for the trademarks as well
 Had some weird issue with typing from express 5; reverted to 4 for now, but will dig into this issue when I'm not into time pressure.
 Added some TODO comment for next steps
 
+## CRUD for documents
+
+Same things as before; seems that it will be the heaviest controller of the project.
+For now, validation/classification/scoring is not handle but will be next step; TODO has been added all over
+
+
+## Classification service
+
+Used some regex to check content and title for a match, we concat the title at the start of the content to slash the regex matching process by 2.
 

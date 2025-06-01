@@ -1,8 +1,7 @@
 import { Request, Response } from 'express';
 import db from '../config/database';
-import { Trademark } from '../models/Trademark';
-import { Document } from '../models/Document';
 
+import { classifyDocument } from '../services/documentService';
 
 export const createDocument = async (req: Request, res: Response) => {
   const { title, mime_type, content, document_date, trademark_id } = req.body;
@@ -15,7 +14,7 @@ export const createDocument = async (req: Request, res: Response) => {
 
   let sql = 'INSERT INTO documents (title, mime_type, content, document_date, type, trademark_id) VALUES (?, ?, ?, ?, ?, ?)'
 
-  let type = 'other' // TODO : classify the document before creation
+  let type = classifyDocument(title, content);
 
   db.run(
     sql,
@@ -69,7 +68,7 @@ export const updateDocument = async (req: Request, res: Response) => {
 
   let sql = 'UPDATE documents SET title = ?, mime_type = ?, content = ?, document_date = ?, type = ?, trademark_id = ? WHERE id = ?'
 
-  let type = 'other' // TODO : classify the document before update
+  let type = classifyDocument(title, content);
 
   db.run(
     sql,
