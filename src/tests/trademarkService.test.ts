@@ -82,7 +82,6 @@ describe('trademarkService', () => {
 
       const score = await trademarkService.scoreTrademark(trademark);
 
-      // Key types: 4*10 = 40, Time coverage: 4 years covered out of 6 (2020-2025) = (4/6)*30, Volume: 5*2=10
       const yearsSinceRegistration = new Date().getFullYear() - 2020 + 1;
       const yearsCovered = 4;
       const expectedTimeCoverage = Math.min((yearsCovered / yearsSinceRegistration) * 30, 30);

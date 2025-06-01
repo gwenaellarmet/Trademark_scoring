@@ -2,7 +2,7 @@ import express from 'express';
 import './config/database';
 
 import trademarkRoutes from './routes/trademarkRoutes';
-import documentRoutes from './routes/trademarkRoutes';
+import documentRoutes from './routes/documentRoutes';
 
 const app = express();
 

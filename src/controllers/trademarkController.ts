@@ -18,7 +18,7 @@ export const createTrademark = async (req: Request, res: Response) => {
     [name, registration_date, score], 
     function (err: Error | null) {
       if (err) res.status(400).json({ error: err });
-      res.status(201).json(this);
+      res.status(201).json({ id: this.lastID, name, registration_date, score });
     }
   );
 }
@@ -37,8 +37,8 @@ export const getTrademarks = async (req: Request, res: Response) => {
 export const getTrademark = async (req: Request, res: Response) => {
   if (req.params.id === undefined) {
     return res.status(400).json({ error: 'Id is required' });
-  } 
-  
+  }
+
   let sql = 'SELECT * FROM trademarks WHERE id = ?';
 
   db.get(sql,
@@ -52,13 +52,17 @@ export const getTrademark = async (req: Request, res: Response) => {
 };
 
 export const updateTrademark = async (req: Request, res: Response) => {
+  if (req.params.id === undefined) {
+    return res.status(400).json({ error: 'Id is required' });
+  }
+
   let { name, registration_date } = req.body;
-  
+
   if (name === undefined || registration_date === undefined || req.params.id === undefined) {
     return res.status(400).json({ error: 'Name, registration date and id are required' });
   }
 
-  let score = scoreTrademark(req.body as Trademark);
+  let score = scoreTrademark({...req.body, id: req.params.id} as Trademark);
 
   let sql = 'UPDATE trademarks SET name = ?, registration_date = ?, score = ? WHERE id = ?';
 
@@ -68,7 +72,7 @@ export const updateTrademark = async (req: Request, res: Response) => {
       if (err) res.status(400).json({ error: err.message });
       if (this.changes === 0) return res.status(404).json({ error: 'Not found' });
 
-      res.status(201).json(this);
+      res.status(201).json({ id: req.params.id, name, registration_date, score });
     }
   );
 }
@@ -77,7 +81,7 @@ export const deleteTrademark = async (req: Request, res: Response) => {
   if (req.params.id === undefined) {
     return res.status(400).json({ error: 'Id is required' });
   }
-  
+
   let sql = 'DELETE FROM trademarks WHERE id = ?';
 
   db.run(sql, 

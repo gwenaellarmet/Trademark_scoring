@@ -65,6 +65,10 @@ export const getDocument = async (req: Request, res: Response) => {
 };
 
 export const updateDocument = async (req: Request, res: Response) => {
+  if (!req.params.id) {
+    return res.status(400).json({ error: 'Id is required' });
+  }
+  
   const { title, mime_type, content, document_date, trademark_id } = req.body;
 
   if (!title || !mime_type || !content || !document_date || !trademark_id) {
@@ -72,7 +76,6 @@ export const updateDocument = async (req: Request, res: Response) => {
   }
 
   let trademark = await getTrademarkbyId(trademark_id);
-
   if (!validateDocument(trademark.name, content)) return res.status(400).json({ error: 'Invalid Document' });
 
   let sql = 'UPDATE documents SET title = ?, mime_type = ?, content = ?, document_date = ?, type = ?, trademark_id = ? WHERE id = ?'
@@ -81,7 +84,7 @@ export const updateDocument = async (req: Request, res: Response) => {
 
   db.run(
     sql,
-    [title, mime_type, content, document_date, type, trademark_id],
+    [title, mime_type, content, document_date, type, trademark_id, req.params.id],
     async function (err) {
       if (err) return res.status(400).json({ error: err.message });
       if (this.changes === 0) return res.status(404).json({ error: 'Not found' });

@@ -59,3 +59,6 @@ Added delete on cascade to avoid have documents without trademark
 DocumentService : quite quick to test with only a few options for the logic functions. For getDocumentById, had to mock the database
 TrademarkService : Quite heavy but tested quite a few cases
 
+## Testing controllers
+
+Tested all CRUD endpoints, didn't tested all possible errors messages; would be done if there was more time
