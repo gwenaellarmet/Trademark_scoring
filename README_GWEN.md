@@ -2,7 +2,7 @@
 
 This file will be used to take some notes during the project
 I'll clean it and add my tought on the project at the end
-
+Each section correspond to a commit
 
 ## API development
 ### First setup
@@ -71,39 +71,3 @@ For the front-end, as it's optionnal and a prototype; I used Copilot to generate
 
 This project was a prototype project so most of good practice for working as severals devs where not put in place, and the project structure is not really scalable (especialy the Front-End); there is no pre-commit hooks for testing, everything is on the main branch basically all that need to be set up to assure good cooperation between devs and code quality.
 I did enjoy the project, it's good to go back to a full ts stack.
-
-# Installation
-
-1. Install dependencies
-
-   In the project root directory, run:
-   ```bash
-   npm install
-   ```
-
-2. Set up the database
-
-   The SQLite database and tables will be created automatically on first run.  
-   No manual setup is required.
-
-3. Start the backend server
-
-   ```bash
-   npm run dev
-   ```
-   This will start the Express server with auto-reload (using nodemon).
-
-4. Access the web application
-
-   Open your browser and go to:
-   ```
-   http://localhost:3000
-   ```
-   (or the port specified in your environment, if different)
-
-5. Run tests (optional)
-
-   To run all Jest tests:
-   ```bash
-   npm test
-   ```
