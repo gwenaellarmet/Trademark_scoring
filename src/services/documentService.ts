@@ -65,6 +65,10 @@ export const validateDocument = (trademarkName: string, documentContent: string)
   return (documentContent.toLowerCase().includes(trademarkName.toLowerCase()))
 }
 
+export const validateDocumentDate = (trademarkDate: Date, documentDate: Date): boolean => {
+  return documentDate > trademarkDate;
+}
+
 // Functions used for scoring trademarks
 export const getDocumentsByTrademarkId = (trademarkId: number): Promise<Document[]> => {
   return new Promise((resolve, reject) => {

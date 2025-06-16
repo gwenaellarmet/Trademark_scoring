@@ -3,6 +3,7 @@ import db from '../config/database';
 
 import { classifyDocument, 
          validateDocument,
+         validateDocumentDate,
          getDocumentbyId } from '../services/documentService';
 import { getTrademarkbyId,
          updateTrademarkScore } from '../services/trademarkService';
@@ -15,8 +16,8 @@ export const createDocument = async (req: Request, res: Response) => {
   }
   
   let trademark = await getTrademarkbyId(trademark_id);
-
-  if (!validateDocument(trademark.name, content)) return res.status(400).json({ error: 'Invalid Document' });
+  if (!validateDocument(trademark.name, content) || 
+      !validateDocumentDate(new Date(trademark.registration_date), new Date(document_date))) return res.status(400).json({ error: 'Invalid Document' });
 
 
   let sql = 'INSERT INTO documents (title, mime_type, content, document_date, type, trademark_id) VALUES (?, ?, ?, ?, ?, ?)'
@@ -76,7 +77,8 @@ export const updateDocument = async (req: Request, res: Response) => {
   }
 
   let trademark = await getTrademarkbyId(trademark_id);
-  if (!validateDocument(trademark.name, content)) return res.status(400).json({ error: 'Invalid Document' });
+  if (!validateDocument(trademark.name, content) 
+   || !validateDocumentDate(new Date(trademark.registration_date), new Date(document_date))) return res.status(400).json({ error: 'Invalid Document' });
 
   let sql = 'UPDATE documents SET title = ?, mime_type = ?, content = ?, document_date = ?, type = ?, trademark_id = ? WHERE id = ?'
 
